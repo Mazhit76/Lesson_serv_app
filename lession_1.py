@@ -100,6 +100,8 @@
 
 import chardet
 
+
+
 # with open('test_file_lesson1.txt', 'w+') as f:
 #     f.write("сетевое программирование\n")
 #     f.write("сокет\n")
