@@ -15,79 +15,148 @@ b. Создать функцию write_to_csv(), в которую переда�
 c. Проверить работу программы через вызов функции write_to_csv().
 
 """
-import csv
-from platform import system
-import re
-import chardet
+# import csv
+# from platform import system
+# import re
+# import chardet
+#
+# OSNAME = system().lower()
+#
+# FILE1 = 'info_1.txt'
+# FILE2 = 'info_2.txt'
+# FILE3 = 'info_3.txt'
+#
+# MASSIVE_FILES = [FILE1, FILE2, FILE3]
+#
+# MASSIVE_SEARCH_TEXT = ['Изготовитель системы', 'Название ОС', 'Код продукта', 'Тип системы']
+#
+# os_prod_list = []
+# os_name_list = []
+# os_code_list = []
+# os_type_list = []
+#
+# main_data = []
+#
+#
+# def type_file(file_open):
+#     with open(file_open, 'rb') as f:
+#         file_contest = f.read()
+#         result = chardet.detect(file_contest)
+#         return result['encoding']
+#
+#
+# def get_data(massive_files, massive_search_text):
+#     for i in range(len(massive_files)):
+#         main_data.append([])
+#         with open(massive_files[i], 'r', encoding=type_file(massive_files[i])) as f:
+#             text_in_file = f.read()
+#
+#             # Search data in text
+#             for el_search in massive_search_text:
+#                 reg_exp = f'{el_search}.*'
+#                 result = re.findall(reg_exp, text_in_file)
+#                 if result:
+#                     reg_sub = f'{el_search}:\s+'
+#                     text_line = re.sub(reg_sub, '', result[0])
+#                     # record to massive by element
+#                     if el_search == massive_search_text[0]:
+#                         os_prod_list.append(text_line)
+#                         main_data[i].append(text_line)
+#                     elif el_search == massive_search_text[1]:
+#                         os_name_list.append(text_line)
+#                         main_data[i].append(text_line)
+#                     elif el_search == massive_search_text[2]:
+#                         os_code_list.append(text_line)
+#                         main_data[i].append(text_line)
+#                     elif el_search == massive_search_text[3]:
+#                         os_type_list.append(text_line)
+#                         main_data[i].append(text_line)
+#
+#     main_data.insert(0, massive_search_text)
+#     return main_data
+#
+# def write_to_csv(file_csv):
+#
+#     data = get_data(MASSIVE_FILES, MASSIVE_SEARCH_TEXT)
+#     with open(file_csv, 'w') as f_out:
+#         f_out_writer = csv.writer(f_out, quoting=csv.QUOTE_NONNUMERIC)
+#         for row in data:
+#             f_out_writer.writerow(row)
+#     with open(file_csv) as f_read:
+#         print(f_read)
+#     with open(file_csv) as f_n:
+#         f_n_reader = csv.reader(f_n)
+#         f_n_headers = next(f_n_reader)
+#         print('Headers: ', f_n_headers)
+#         for row in f_n_reader:
+#             print(row)
+# write_to_csv('output_file.csv')
 
-OSNAME = system().lower()
 
-FILE1 = 'info_1.txt'
-FILE2 = 'info_2.txt'
-FILE3 = 'info_3.txt'
+"""
+2. Задание на закрепление знаний по модулю json. Есть файл orders в формате JSON с информацией о заказах. 
+Написать скрипт, автоматизирующий его заполнение данными. Для этого:
 
-MASSIVE_FILES = [FILE1, FILE2, FILE3]
+a. Создать функцию write_order_to_json(), в которую передается 5 параметров — товар (item), количество (quantity), 
+цена (price), покупатель (buyer), дата (date). Функция должна предусматривать запись данных в виде словаря 
+в файл orders.json. При записи данных указать величину отступа в 4 пробельных символа;
 
-MASSIVE_SEARCH_TEXT = ['Изготовитель системы', 'Название ОС', 'Код продукта', 'Тип системы']
+b. Проверить работу программы через вызов функции write_order_to_json() с передачей в нее значений каждого параметра.
+"""
 
-os_prod_list = []
-os_name_list = []
-os_code_list = []
-os_type_list = []
-
-main_data = []
+import json
 
 
-def type_file(file_open):
-    with open(file_open, 'rb') as f:
-        file_contest = f.read()
-        result = chardet.detect(file_contest)
-        return result['encoding']
+def write_order_json(item, quantity, price, buyer, date, file_to_write, turple_to_json=None):
+
+    dict_to_json = {
+        'item': item,
+        'quantity': quantity,
+        'price': price,
+        'buyer': buyer,
+        'date': date
+    }
+    list_to_json = [
+        item,
+        quantity,
+        price,
+        buyer,
+        date
+    ]
+    with open(file_to_write, 'r+', encoding='utf-8') as f_write:
+        f_content_json = f_write.read()
+
+        #first key in file type string
+        f_content = json.loads(f_content_json)
+        key_in_file = list(f_content.keys())[0]
+        f_content[key_in_file] = list_to_json
+
+        # rewrite data to file
+        f_write.seek(0)
+        json.dump(f_content, f_write, sort_keys=True, indent=4)
+
+    with open(file_to_write, encoding='utf-8') as f_read:
+        f_read_content = f_read.read()
+        objs = json.loads(f_read_content)
+
+        print(objs)
+
+        # for section, commands in objs.items():
+        #     print(section)
+        #     print(commands)
+write_order_json('брюки', '3', '3500', 'Мажит', '25.01.2021', 'orders.json')
 
 
-def get_data(massive_files, massive_search_text):
-    for i in range(len(massive_files)):
-        main_data.append([])
-        with open(massive_files[i], 'r', encoding=type_file(massive_files[i])) as f:
-            text_in_file = f.read()
+"""
+3. Задание на закрепление знаний по модулю yaml. Написать скрипт, автоматизирующий сохранение данных в файле YAML-формата.
+ Для этого:
+a. Подготовить данные для записи в виде словаря, в котором первому ключу соответствует список, 
+второму — целое число, третьему — вложенный словарь, где значение каждого ключа — это целое число с юникод-символом,
+ отсутствующим в кодировке ASCII (например, €);
 
-            # Search data in text
-            for el_search in massive_search_text:
-                reg_exp = f'{el_search}.*'
-                result = re.findall(reg_exp, text_in_file)
-                if result:
-                    reg_sub = f'{el_search}:\s+'
-                    text_line = re.sub(reg_sub, '', result[0])
-                    # record to massive by element
-                    if el_search == massive_search_text[0]:
-                        os_prod_list.append(text_line)
-                        main_data[i].append(text_line)
-                    elif el_search == massive_search_text[1]:
-                        os_name_list.append(text_line)
-                        main_data[i].append(text_line)
-                    elif el_search == massive_search_text[2]:
-                        os_code_list.append(text_line)
-                        main_data[i].append(text_line)
-                    elif el_search == massive_search_text[3]:
-                        os_type_list.append(text_line)
-                        main_data[i].append(text_line)
+b. Реализовать сохранение данных в файл формата YAML — например, в файл file.yaml. 
+При этом обеспечить стилизацию файла с помощью параметра default_flow_style, а также установить возможность 
+работы с юникодом: allow_unicode = True;
 
-    main_data.insert(0, massive_search_text)
-    return main_data
-
-def write_to_csv(file_csv):
-
-    data = get_data(MASSIVE_FILES, MASSIVE_SEARCH_TEXT)
-    with open(file_csv, 'w') as f_out:
-        f_out_writer = csv.writer(f_out, quoting=csv.QUOTE_NONNUMERIC)
-        for row in data:
-            f_out_writer.writerow(row)
-    with open(file_csv) as f_read:
-        print(f_read)
-    with open(file_csv) as f_n:
-        f_n_reader = csv.reader(f_n)
-        f_n_headers = next(f_n_reader)
-        print('Headers: ', f_n_headers)
-        for row in f_n_reader:
-            print(row)
-write_to_csv('output_file.csv')
+c. Реализовать считывание данных из созданного файла и проверить, совпадают ли они с исходными.
+"""
