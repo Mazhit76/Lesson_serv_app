@@ -91,7 +91,7 @@ c. Проверить работу программы через вызов фу
 #         for row in f_n_reader:
 #             print(row)
 # write_to_csv('output_file.csv')
-
+import yaml
 
 """
 2. Задание на закрепление знаний по модулю json. Есть файл orders в формате JSON с информацией о заказах. 
@@ -103,48 +103,48 @@ a. Создать функцию write_order_to_json(), в которую пер
 
 b. Проверить работу программы через вызов функции write_order_to_json() с передачей в нее значений каждого параметра.
 """
-
-import json
-
-
-def write_order_json(item, quantity, price, buyer, date, file_to_write, turple_to_json=None):
-
-    dict_to_json = {
-        'item': item,
-        'quantity': quantity,
-        'price': price,
-        'buyer': buyer,
-        'date': date
-    }
-    list_to_json = [
-        item,
-        quantity,
-        price,
-        buyer,
-        date
-    ]
-    with open(file_to_write, 'r+', encoding='utf-8') as f_write:
-        f_content_json = f_write.read()
-
-        #first key in file type string
-        f_content = json.loads(f_content_json)
-        key_in_file = list(f_content.keys())[0]
-        f_content[key_in_file] = list_to_json
-
-        # rewrite data to file
-        f_write.seek(0)
-        json.dump(f_content, f_write, sort_keys=True, indent=4)
-
-    with open(file_to_write, encoding='utf-8') as f_read:
-        f_read_content = f_read.read()
-        objs = json.loads(f_read_content)
-
-        print(objs)
-
-        # for section, commands in objs.items():
-        #     print(section)
-        #     print(commands)
-write_order_json('брюки', '3', '3500', 'Мажит', '25.01.2021', 'orders.json')
+#
+# import json
+#
+#
+# def write_order_json(item, quantity, price, buyer, date, file_to_write):
+#
+#     dict_to_json = {
+#         'item': item,
+#         'quantity': quantity,
+#         'price': price,
+#         'buyer': buyer,
+#         'date': date
+#     }
+#     list_to_json = [
+#         item,
+#         quantity,
+#         price,
+#         buyer,
+#         date
+#     ]
+#     with open(file_to_write, 'r+', encoding='utf-8') as f_write:
+#         f_content_json = f_write.read()
+#
+#         #first key in file type string
+#         f_content = json.loads(f_content_json)
+#         key_in_file = list(f_content.keys())[0]
+#         f_content[key_in_file] = list_to_json
+#
+#         # rewrite data to file
+#         f_write.seek(0)
+#         json.dump(f_content, f_write, sort_keys=True, indent=4)
+#
+#     with open(file_to_write, encoding='utf-8') as f_read:
+#         f_read_content = f_read.read()
+#         objs = json.loads(f_read_content)
+#
+#         print(objs)
+#
+#         # for section, commands in objs.items():
+#         #     print(section)
+#         #     print(commands)
+# write_order_json('брюки', '3', '3500', 'Мажит', '25.01.2021', 'orders.json')
 
 
 """
@@ -160,3 +160,20 @@ b. Реализовать сохранение данных в файл форм
 
 c. Реализовать считывание данных из созданного файла и проверить, совпадают ли они с исходными.
 """
+
+
+DICT_TO_WRITE = {
+    'one_key': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    'two_key': 45,
+    'three_key': {'1': '&', '2': 'Ф', '3': 'Ж'}
+}
+
+with open('file.yaml', 'w', encoding='utf-8') as f_write:
+    yaml.dump(DICT_TO_WRITE, f_write)
+
+with open('file.yaml', 'r', encoding='utf-8') as f_read:
+    f_content = yaml.load(f_read, Loader=yaml.SafeLoader)
+print(f_content)
+
+
+
