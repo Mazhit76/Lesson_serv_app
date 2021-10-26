@@ -1,8 +1,10 @@
 from socket import *
 import time, click, json
+
+
 @click.command()
-@click.option('--adress', default ='localhost', help='ip adress')
-@click.option('--port', default ='7777')   # prompt='Enter port'
+@click.option('--adress', default='localhost', help='ip adress')
+@click.option('--port', default='7777')  # prompt='Enter port'
 def client_tcp(adress, port):
     with socket(AF_INET, SOCK_STREAM) as s:
         s.connect((adress, int(port)))
@@ -10,7 +12,7 @@ def client_tcp(adress, port):
         server_client = True
         client_authenticate = False
         while server_client:
-            c_time = time.ctime(time.time())+"\n"
+            c_time = time.ctime(time.time()) + "\n"
             data = []
 
             if not client_authenticate:
@@ -44,7 +46,6 @@ def client_tcp(adress, port):
             data_in = data.pop(0)
             print(data_in)
 
-
             if 'response' in data_in:
                 if data_in.get('response') == '200':
                     user['time_authenticate'] = data_in['time_authenticate']
@@ -60,8 +61,6 @@ def client_tcp(adress, port):
                     }
                     msg_out(data, presence, s, True)
                     client_authenticate = True
-
-
 
             if 'action' in data_in:
                 if data_in.get('action') == 'probe':
@@ -83,10 +82,7 @@ def client_tcp(adress, port):
                     server_client, presence = server_client_close(server_client, presence)
                     msg_out(data, presence, s, server_client)
 
-
         s.close()
-
-
 
 
 # Функция на входе принимает
@@ -99,7 +95,10 @@ def msg_out(data, msg, s, server_client=True):
     data = []
     print(f'Отправлено {msg_json}')
 
-def server_client_close(server_client, presense={}):
+
+def server_client_close(server_client, presense=None):
+    if presense is None:
+        presense = {}
     presense.update({
         "action": "quick"
     })
