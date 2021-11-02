@@ -26,7 +26,9 @@ import time, click, json
 @click.command()
 @click.option('--adress', default ='', help='ip adress')
 @click.option('--port', default ='7777')  # prompt='Enter port'
-def server_tcp(adress, port, user={}):
+def server_tcp(adress, port, user=None):
+    if user is None:
+        user = {}
     user = {
         "C0deMaver1ck": {"password": "CorrectHorseBatterStaple",
                          "time_authenticate": ''}
@@ -40,7 +42,6 @@ def server_tcp(adress, port, user={}):
 
             timestr = time.ctime(time.time())
             data_out = {}
-
 
         # Цикл  пока клиент не ушел
             server_client = True
