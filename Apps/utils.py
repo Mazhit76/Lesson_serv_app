@@ -29,6 +29,7 @@ class ClientServer:
             "RESPONSE_400"
         ]
 
+
     def load_config(self):
         if not self.is_server:
             self.config_keys.append('DEFAULT_IP_ADDRESS')

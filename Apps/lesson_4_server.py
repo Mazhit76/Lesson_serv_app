@@ -24,6 +24,7 @@ class Server(ClientServer):
         }
 
 
+
 def main_server():
     global CONFIGS
     client = ClientServer()

@@ -4,6 +4,7 @@ from Apps.utils import ClientServer
 from data_for_tests import DataTests
 
 
+
 class TestMyCase(unittest.TestCase):
 
     def test_one(self):
