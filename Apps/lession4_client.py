@@ -5,7 +5,6 @@ import time
 
 from utils import ClientServer
 
-
 class Client(ClientServer):
 
     def __init__(self, is_server=False):

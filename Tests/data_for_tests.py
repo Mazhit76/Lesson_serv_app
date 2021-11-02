@@ -20,7 +20,6 @@ test_message_server_err = Mock(return_value={'response': 400, 'ERROR': 'Bad requ
 test_message_client_to_server = Mock(return_value={'action': 'presence', 'time': 1635745970.9942236,
                                                    'user': {'account_name': 'Guest'}})
 
-
 class TestSocket:
     """
     Test class for create tests sockets
